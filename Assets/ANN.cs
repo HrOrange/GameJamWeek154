@@ -1,4 +1,5 @@
-using System;
+//using System;
+using UnityEngine;
 using System.Collections;
 
 public class ANN
@@ -21,8 +22,7 @@ public class ANN
 
     public void RandomizeWeights()
     {
-        Random r = new Random();
-        for (int k = 0; k < this.weights.Length; k++) for (int i = 0; i < this.weights[k].Length; i++) for (int j = 0; j < this.weights[k][i].Length; j++) this.weights[k][i][j] = (float)Math.Round(r.NextDouble(), 1);
+        for (int k = 0; k < this.weights.Length; k++) for (int i = 0; i < this.weights[k].Length; i++) for (int j = 0; j < this.weights[k][i].Length; j++) this.weights[k][i][j] = Mathf.Round(Random.Range(0f, 1f) * 100) / 100;
     }
 
     //this is for the NEAT algorithm (An algorithm that combines ANN and generic algorithms)
@@ -30,8 +30,7 @@ public class ANN
     {
         ANN[] children = new ANN[numberOfChildren];
         for (int k = 0; k < numberOfChildren; k++) children[k] = new ANN(parent1.size);
-
-        Random r = new Random();
+        
         for (int c = 0; c < children.Length; c++)
         {
             for (int k = 0; k < parent1.weights.Length; k++)
@@ -40,24 +39,24 @@ public class ANN
                 {
                     for (int j = 0; j < parent1.weights[k][i].Length; j++)
                     {
-                        if (r.NextDouble() > 0.5)
+                        if (Random.Range(0, 2) == 0)
                         {
-                            if (r.NextDouble() < mutationRate) children[c].weights[k][i][j] = parent1.weights[k][i][j] + (float)r.NextDouble() - 0.5f;
+                            if (Random.Range(0f, 1f) < mutationRate) children[c].weights[k][i][j] = parent1.weights[k][i][j] + Random.Range(-0.1f, 0.1f);
                             else children[c].weights[k][i][j] = parent1.weights[k][i][j];
                         }
                         else
                         {
-                            if (r.NextDouble() < mutationRate) children[c].weights[k][i][j] = parent2.weights[k][i][j] + (float)r.NextDouble() - 0.5f;
+                            if (Random.Range(0f, 1f) < mutationRate) children[c].weights[k][i][j] = parent2.weights[k][i][j] + Random.Range(-0.1f, 0.1f);
                             else children[c].weights[k][i][j] = parent2.weights[k][i][j];
                         }
                     }
                 }
             }
-            if (r.NextDouble() > 0.5)
+            if (Random.Range(0, 2) == 0)
             {
-                children[c].bias = parent2.bias + (float)r.NextDouble() - 0.5f;
+                children[c].bias = parent2.bias + Random.Range(-0.1f, 0.1f);
             }
-            else children[c].bias = parent2.bias + (float)r.NextDouble() - 0.5f;
+            else children[c].bias = parent2.bias + Random.Range(-0.1f, 0.1f);
         }
         return children;
     }
@@ -71,7 +70,7 @@ public class ANN
     }
     public float Sigmoid(float value)
     {
-        return 1.0f / (1.0f + (float)Math.Exp(-value));
+        return 1.0f / (1.0f + Mathf.Exp(-value));
     }
     public float[][] Calculate(float[] input)
     {

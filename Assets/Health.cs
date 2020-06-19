@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
 {
@@ -10,18 +11,7 @@ public class Health : MonoBehaviour
 
     void Start()
     {
-        HPSHowText.text = "HP: " + HP.ToString();
-        ANN pet = new ANN(new int[] { 3, 2, 1 });
-        ANN pet2 = new ANN(new int[] { 3, 2, 1 });
-        pet.RandomizeWeights();
-        pet2.RandomizeWeights();
-        ANN[] children = pet.CreateChildren(pet, pet2, 4, 0.1f);
-        print(children[0].weights[0][0][0]);
-        print(pet.weights[0][0][0]);
-        print(pet2.weights[0][0][0]);
-
-
-        float[][] output = pet.Calculate(new float[] { 1, 1, 1 });
+        //HPSHowText.text = "HP: " + HP.ToString();
     }
     public void DoDamage(int DamageTaken)
     {
