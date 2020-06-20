@@ -1,12 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    AudioSource source;
+    public AudioSource MusicSource;
+    public AudioSource SoundEffectSource;
+    public AudioMixer MainMixer;
     static GameObject instance;
     public List<AudioClip> AC = new List<AudioClip>();
+    public int MainMenuSceneNumber;
+
+    public float MainVolume = 0.5f;
+    public float SoundEffectVolume = 0.5f;
+    public float MusicVolume = 0.5f;
+
 
     void Awake()
     {
@@ -17,10 +26,9 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         } 
     }
-
-    void Start()
+    private void Start()
     {
-        source = GetComponent<AudioSource>();
+        MusicSource.Play();
     }
 
     void PlayOneShot(string clipName, float Volume)
@@ -36,6 +44,6 @@ public class AudioManager : MonoBehaviour
             }
         } 
 
-        if (clip != null) source.PlayOneShot(clip, Volume);
+        if (clip != null) SoundEffectSource.PlayOneShot(clip, Volume);
     }
 }
