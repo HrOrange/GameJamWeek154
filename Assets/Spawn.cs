@@ -16,9 +16,9 @@ public class Spawn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int k = 0; k < a; k++)
+        for (float k = -a / 2 + 0.5f; k < a / 2 + 0.5f; k++)
         {
-            for (int i = 0; i < a; i++)
+            for (float i = -a / 2 + 0.5f; i < a / 2 + 0.5f; i++)
             {
                 Instantiate(field, new Vector2(k * scalex, i * scaley), Quaternion.identity, transform);
             }
@@ -31,18 +31,42 @@ public class Spawn : MonoBehaviour
         {
             Timer = 0;
             int r = Random.Range(0, 3);
-            print(r);
+
+            Vector2 SpawnPos = new Vector2((Random.Range(-a / 2, a / 2) + 0.5f) * scalex, (Random.Range(-a / 2, a / 2) + 0.5f) * scaley);
+            bool there = false;
+            foreach(GameObject ob in Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+            {
+                if ((Vector2)ob.transform.position == SpawnPos && ob.gameObject.tag != field.tag)
+                {
+                    there = true;
+                    break;
+                } 
+            }
+            while (there)
+            {
+                SpawnPos = new Vector2((Random.Range(-a / 2, a / 2) + 0.5f) * scalex, (Random.Range(-a / 2, a / 2) + 0.5f) * scaley);
+                there = false;
+                foreach (GameObject ob in Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+                {
+                    if ((Vector2)ob.transform.position == SpawnPos && ob.gameObject.tag != field.tag)
+                    {
+                        there = true;
+                        break;
+                    }
+                }
+            }
+
             if (r == 0)
             {
-                Instantiate(ScissorField, new Vector2(Random.Range(0, a) * scalex, Random.Range(0, a) * scaley), Quaternion.identity, transform);
+                Instantiate(ScissorField, SpawnPos, Quaternion.identity, transform);
             }
             else if(r == 1)
             {
-                Instantiate(RockField, new Vector2(Random.Range(0, a) * scalex, Random.Range(0, a) * scaley), Quaternion.identity, transform);
+                Instantiate(RockField, SpawnPos, Quaternion.identity, transform);
             }
             else if(r == 2)
             {
-                Instantiate(PaperField, new Vector2(Random.Range(0, a) * scalex, Random.Range(0, a) * scaley), Quaternion.identity, transform);
+                Instantiate(PaperField, SpawnPos, Quaternion.identity, transform);
             }
         }
     }

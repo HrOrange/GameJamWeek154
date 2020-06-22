@@ -1,53 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AudioMangerExtender : MonoBehaviour
 {
-    public Text MainVolumeShowText;
+    public TextMeshProUGUI MainVolumeShowText;
     public Slider MainVolumeSlider;
-    public Text MusicVolumeShowText;
+    public TextMeshProUGUI MusicVolumeShowText;
     public Slider MusicVolumeSlider;
-    public Text SoundEffectVolumeShowText;
+    public TextMeshProUGUI SoundEffectVolumeShowText;
     public Slider SoundEffectVolumeSlider;
     public AudioManager AM;
 
     private void Start()
     {
         AM = FindObjectOfType<AudioManager>();
-        MainVolumeSlider.value = AM.MainVolume;
-        MainVolumeShowText.text = (AM.MainVolume * 100).ToString("F0") + "%";
-        MusicVolumeSlider.value = AM.MusicVolume;
-        MusicVolumeShowText.text = (AM.MusicVolume * 100).ToString("F0") + "%";
-        SoundEffectVolumeSlider.value = AM.SoundEffectVolume;
-        SoundEffectVolumeShowText.text = (AM.SoundEffectVolume * 100).ToString("F0") + "%";
-        AM.MainMixer.SetFloat("Main", AM.MainVolume * 20 - 10);
-        AM.MainMixer.SetFloat("Effect", AM.SoundEffectVolume * 20 - 10);
-        AM.MainMixer.SetFloat("Music", AM.MusicVolume * 20 - 10);
+        AM.MainMixer.SetFloat("Main", AM.MainVolume);
+        AM.MainMixer.SetFloat("Effect", AM.SoundEffectVolume);
+        AM.MainMixer.SetFloat("Music", AM.MusicVolume);
     }
 
     public void OnMainVolumeChange(float newMainVolume)
     {
-        AM.MainVolume = Mathf.Round(newMainVolume * 100) / 100;
-        MainVolumeShowText.text = (AM.MainVolume * 100).ToString("F0") + "%";
-        MainVolumeSlider.value = AM.MainVolume;
-        AM.MainMixer.SetFloat("Main", AM.MainVolume * 20 - 10);
+        if(newMainVolume != -20)
+        {
+            AM.MainVolume = Mathf.Round(newMainVolume * 100) / 100;
+            MainVolumeShowText.text = ((AM.MainVolume + 20) / 40 * 100).ToString("F0") + "%";
+            MainVolumeSlider.value = AM.MainVolume;
+            AM.MainMixer.SetFloat("Main", AM.MainVolume);
+        }
+        else
+        {
+            AM.MainVolume = -80;
+            MainVolumeShowText.text = "0%";
+            MainVolumeSlider.value = -20;
+            AM.MainMixer.SetFloat("Main", -80);
+        }
     }
 
     public void OnSoundEffectVolumeChange(float newSoundEffectVolume)
     {
-        AM.SoundEffectVolume = Mathf.Round(newSoundEffectVolume * 100) / 100;
-        SoundEffectVolumeShowText.text = (AM.SoundEffectVolume * 100).ToString("F0") + "%";
-        SoundEffectVolumeSlider.value = AM.SoundEffectVolume;
-        AM.MainMixer.SetFloat("Effect", AM.SoundEffectVolume * 20 - 10);
+        if (newSoundEffectVolume != -20)
+        {
+            AM.SoundEffectVolume = Mathf.Round(newSoundEffectVolume * 100) / 100;
+            SoundEffectVolumeShowText.text = ((AM.SoundEffectVolume + 20) / 40 * 100).ToString("F0") + "%";
+            SoundEffectVolumeSlider.value = AM.SoundEffectVolume;
+            AM.MainMixer.SetFloat("Effect", AM.SoundEffectVolume);
+        }
+        else
+        {
+            AM.SoundEffectVolume = -80;
+            SoundEffectVolumeShowText.text = "0%";
+            SoundEffectVolumeSlider.value = -20;
+            AM.MainMixer.SetFloat("Effect", -80);
+        }
     }
 
     public void OnMusicVolumeChange(float newMusicVolume)
     {
-        AM.MusicVolume = Mathf.Round(newMusicVolume * 100) / 100;
-        MusicVolumeShowText.text = (AM.MusicVolume * 100).ToString("F0") + "%";
-        MusicVolumeSlider.value = AM.MusicVolume;
-        AM.MainMixer.SetFloat("Music", AM.MusicVolume * 20 - 10);
+        if (newMusicVolume != -20)
+        {
+            AM.MusicVolume = Mathf.Round(newMusicVolume * 100) / 100;
+            MusicVolumeShowText.text = ((AM.MusicVolume + 20) / 40 * 100).ToString("F0") + "%";
+            MusicVolumeSlider.value = AM.MusicVolume;
+            AM.MainMixer.SetFloat("Music", Mathf.Log10(AM.MusicVolume) * 20);
+        }
+        else
+        {
+            AM.MusicVolume = -80;
+            MusicVolumeShowText.text = "0%";
+            MusicVolumeSlider.value = -20;
+            AM.MainMixer.SetFloat("Music", -80);
+        }
     }
 }
