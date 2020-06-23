@@ -13,15 +13,42 @@ public class Spawn : MonoBehaviour
     public float scalex;
     public int a;
     public GameObject field;
-    // Start is called before the first frame update
+
+    Color paperColor;
+    Color scissorColor;
+    Color rockColor;
+    List<Color> DifferentRockColors = new List<Color> { new Color(255, 120, 0), new Color(255, 50, 0), new Color(160, 100, 70)};
+    List<Color> DifferentPaperColors = new List<Color> { new Color(255, 255, 255), new Color(220, 255, 255), new Color(255, 220, 255) };
+    List<Color> DifferentScissorColors = new List<Color> { new Color(255, 0, 255), new Color(50, 0, 255), new Color(220, 140, 255) };
+
+    List<GameObject> fields = new List<GameObject>();
     void Start()
     {
         for (float k = -a / 2 + 0.5f; k < a / 2 + 0.5f; k++)
         {
             for (float i = -a / 2 + 0.5f; i < a / 2 + 0.5f; i++)
             {
-                Instantiate(field, new Vector2(k * scalex, i * scaley), Quaternion.identity, transform);
+                fields.Add(Instantiate(field, new Vector2(k * scalex, i * scaley), Quaternion.identity, transform));
             }
+        }
+        rockColor = DifferentRockColors[Random.Range(0, DifferentRockColors.Count - 1)];
+        paperColor = DifferentPaperColors[Random.Range(0, DifferentPaperColors.Count - 1)];
+        scissorColor = DifferentScissorColors[Random.Range(0, DifferentScissorColors.Count - 1)];
+        Invoke("ChangeColor", 1.8f);
+    }
+    public void ChangeColor()
+    {
+        if(FindObjectOfType<Health>().hand == "Paper")
+        {
+            foreach (GameObject f in fields) f.transform.GetChild(0).GetComponent<SpriteRenderer>().color = paperColor;
+        }
+        else if (FindObjectOfType<Health>().hand == "Scissor")
+        {
+            foreach (GameObject f in fields) f.transform.GetChild(0).GetComponent<SpriteRenderer>().color = scissorColor;
+        }
+        else
+        {
+            foreach (GameObject f in fields) f.transform.GetChild(0).GetComponent<SpriteRenderer>().color = rockColor;
         }
     }
     void Update()

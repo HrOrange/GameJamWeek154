@@ -158,7 +158,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9826683
 MonoBehaviour:
@@ -265,7 +265,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -404,7 +404,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cc312192b51f0974c96fd01af79c4643, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7807c70a321b77348824ab47f7878079, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -766,7 +766,7 @@ MonoBehaviour:
   scaley: 2
   scalex: 2
   a: 10
-  field: {fileID: 3669426759833480167, guid: cba376243b2b71e43a921787a46b5805, type: 3}
+  field: {fileID: 2951078083539425945, guid: cb71f5724a77edd4e9b046dc3bd3526e, type: 3}
 --- !u!4 &901157229
 Transform:
   m_ObjectHideFlags: 0
@@ -976,7 +976,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -250}
+  m_AnchoredPosition: {x: 110, y: -300}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1369779989
@@ -1115,7 +1115,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2016169636
 MonoBehaviour:
@@ -1192,6 +1192,7 @@ MonoBehaviour:
   Interval: 10
   HP: 3
   HPShowText: {fileID: 1035034732}
+  PushBack: 700
   Score: 0
   ScoreShowText: {fileID: 496090724}
   hand: 
@@ -1199,7 +1200,7 @@ MonoBehaviour:
   PaperImage: {fileID: 21300000, guid: ab3a3267f46eb01469e0ae5787f308c5, type: 3}
   RockImage: {fileID: 21300000, guid: dfe77cf984c4de94ca255b2ed69d7aea, type: 3}
   Shown: {fileID: 2016169634}
-  HurtParticleEffect: {fileID: 6785747973354442628, guid: 5f792308c0e68b6439f9612279371854, type: 3}
+  HurtParticleEffect: {fileID: 6763269334517080507, guid: f7895c2f17b99d043be6ce384d27b6ba, type: 3}
   CollectedPointParticleEffect: {fileID: 8272373680078605332, guid: f8ccabbc5f8020b4582a209c9c09b197, type: 3}
 --- !u!4 &2128859413
 Transform:

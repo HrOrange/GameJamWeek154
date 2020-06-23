@@ -31,7 +31,7 @@ public class AudioManager : MonoBehaviour
         MusicSource.Play();
     }
 
-    void PlayOneShot(string clipName, float Volume)
+    public void PlayOneShot(string clipName, float Volume)
     {
         AudioClip clip = null;
 

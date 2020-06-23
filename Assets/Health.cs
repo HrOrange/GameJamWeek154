@@ -8,8 +8,11 @@ public class Health : MonoBehaviour
     private float clock;
     public float Interval = 5f;
 
-    public int HP = 35;
+    Rigidbody2D rb;
+
+    public int HP = 5;
     public Text HPShowText;
+    public float PushBack = 700;
 
     public int Score = 0;
     public Text ScoreShowText;
@@ -27,6 +30,7 @@ public class Health : MonoBehaviour
     {
         HPShowText.text = "HP: " + HP.ToString();
         GiveHand();
+        rb = GetComponent<Rigidbody2D>();
     }
     void Update()
     {
@@ -35,6 +39,7 @@ public class Health : MonoBehaviour
         {
             clock = 0;
             GiveHand();
+            FindObjectOfType<Spawn>().ChangeColor();
         }
     }
     void OnTriggerEnter2D(Collider2D cold)
@@ -42,7 +47,7 @@ public class Health : MonoBehaviour
         if (cold.gameObject.tag == "Rock" && hand == "Paper" || cold.gameObject.tag == "Paper" && hand == "Scissor" || cold.gameObject.tag == "Scissor" && hand == "Rock")
         {
             Destroy(cold.gameObject);
-            Instantiate(CollectedPointParticleEffect, transform.position, Quaternion.identity, transform);
+            Instantiate(CollectedPointParticleEffect, transform.position, Quaternion.identity);
             Score++;
             ScoreShowText.text = "Score: " + Score.ToString();
         }
@@ -50,7 +55,7 @@ public class Health : MonoBehaviour
 
         else if (cold.gameObject.tag == "Rock" && hand == "Scissor" || cold.gameObject.tag == "Paper" && hand == "Rock" || cold.gameObject.tag == "Scissor" && hand == "Paper")
         {
-            DoDamage(1);
+            DoDamage(1, cold.gameObject);
         }
     }
 
@@ -76,10 +81,20 @@ public class Health : MonoBehaviour
             Shown.GetComponent<RectTransform>().localScale = new Vector3(0.8f, 0.6f, 0);
         }
     }
-    public void DoDamage(int DamageTaken)
+    public void DoDamage(int DamageTaken, GameObject DidIt)
     {
         HP -= DamageTaken;
         HPShowText.text = "HP: " + HP.ToString();
-        Instantiate(HurtParticleEffect, transform.position, Quaternion.identity, transform);
+        GameObject spawned = Instantiate(HurtParticleEffect, transform.position, Quaternion.identity);
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Vector3.Normalize(transform.position - DidIt.transform.position) * PushBack);
+        print(FindObjectOfType<AudioManager>());
+        FindObjectOfType<AudioManager>().PlayOneShot("slaphitV3", 1);
+        Invoke("Reactivate", 0.6f);
+        GetComponent<movement>().enabled = false;
+    }
+    void Reactivate()
+    {
+        GetComponent<movement>().enabled = true;
     }
 }
