@@ -28,21 +28,5 @@ public class PointSystem : MonoBehaviour
     {
         clock += Time.deltaTime;
     }
-    void OnTriggerEnter2D(Collider2D cold)
-    {
-        if (cold.gameObject.tag == "Rock" && hand == "Paper")
-        {
-            Destroy(cold.gameObject);
-        }
-        else if(cold.gameObject.tag == "Paper" && hand == "Scissor")
-        {
-            Destroy(cold.gameObject);
-        }
-        else if(cold.gameObject.tag == "Scissor" && hand == "Rock")
-        {
-            Destroy(cold.gameObject);
-        }
-
-    }
 
 }

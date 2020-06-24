@@ -1191,10 +1191,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Interval: 10
   HP: 3
+  Invincible: 0
+  IntervalBetweenInvincible: 0.2
+  Face: {fileID: 1065714203}
   HPShowText: {fileID: 1035034732}
-  PushBack: 700
+  PushBack: 500
   Score: 0
   ScoreShowText: {fileID: 496090724}
+  FieldTag: Field
   hand: 
   ScissorImage: {fileID: 21300000, guid: 51659c5e02595c94184142a614edc9ab, type: 3}
   PaperImage: {fileID: 21300000, guid: ab3a3267f46eb01469e0ae5787f308c5, type: 3}

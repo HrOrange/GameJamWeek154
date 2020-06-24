@@ -11,11 +11,19 @@ public class Health : MonoBehaviour
     Rigidbody2D rb;
 
     public int HP = 5;
+    public float Invincible;
+    public float IntervalBetweenInvincible = 0.2f;
+    float IntervalTimer;
+    int round;
+    public SpriteRenderer Face;
+    Color originalColor;
     public Text HPShowText;
     public float PushBack = 700;
 
     public int Score = 0;
     public Text ScoreShowText;
+
+    public string FieldTag = "Field";
 
     public string hand;
     public Sprite ScissorImage;
@@ -31,11 +39,37 @@ public class Health : MonoBehaviour
         HPShowText.text = "HP: " + HP.ToString();
         GiveHand();
         rb = GetComponent<Rigidbody2D>();
+        originalColor = Face.color;
     }
     void Update()
     {
         clock += Time.deltaTime;
-        if(clock >= Interval)
+        if (Invincible > 0)
+        {
+            Invincible -= Time.deltaTime;
+            IntervalTimer += Time.deltaTime;
+            if (IntervalTimer >= IntervalBetweenInvincible)
+            {
+                if (round == 0)
+                {
+                    round = 1;
+                    Face.color = new Color(Face.color.r - 0.2f, Face.color.g - 0.2f, Face.color.b - 0.2f);
+                }
+                else
+                {
+                    round = 0;
+                    Face.color = originalColor;
+                }
+                IntervalTimer = 0;
+            }
+        }
+        else
+        {
+            Face.color = originalColor;
+            Invincible = 0;
+        }
+
+        if (clock >= Interval)
         {
             clock = 0;
             GiveHand();
@@ -44,18 +78,47 @@ public class Health : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D cold)
     {
-        if (cold.gameObject.tag == "Rock" && hand == "Paper" || cold.gameObject.tag == "Paper" && hand == "Scissor" || cold.gameObject.tag == "Scissor" && hand == "Rock")
+        if(cold.gameObject.tag != FieldTag)
         {
-            Destroy(cold.gameObject);
-            Instantiate(CollectedPointParticleEffect, transform.position, Quaternion.identity);
-            Score++;
-            ScoreShowText.text = "Score: " + Score.ToString();
-        }
+            if (cold.gameObject.tag == "Rock" && hand == "Paper" || cold.gameObject.tag == "Paper" && hand == "Scissor" || cold.gameObject.tag == "Scissor" && hand == "Rock")
+            {
+                //Destroy(cold.gameObject);
+                cold.GetComponent<Animator>().SetTrigger("Change");
+                cold.gameObject.tag = FieldTag;
 
+                Instantiate(CollectedPointParticleEffect, cold.transform.position, Quaternion.identity);
+                Score++;
+                ScoreShowText.text = "Score: " + Score.ToString();
+            }
+            else if (cold.gameObject.tag == "Rock" && hand == "Scissor" || cold.gameObject.tag == "Paper" && hand == "Rock" || cold.gameObject.tag == "Scissor" && hand == "Paper" || cold.gameObject.tag == "NoGo")
+            {
+                if(Invincible <= 0)
+                {
+                    cold.GetComponent<Animator>().SetTrigger("Change");
+                    cold.gameObject.tag = "NoGo";
 
-        else if (cold.gameObject.tag == "Rock" && hand == "Scissor" || cold.gameObject.tag == "Paper" && hand == "Rock" || cold.gameObject.tag == "Scissor" && hand == "Paper")
-        {
-            DoDamage(1, cold.gameObject);
+                    foreach (GameObject ob in Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+                    {
+                        if (ob.transform.position == cold.transform.position - new Vector3(cold.transform.localScale.x * 2, 0, 0) ||
+                            ob.transform.position == cold.transform.position + new Vector3(cold.transform.localScale.x * 2, 0, 0) ||
+                            ob.transform.position == cold.transform.position - new Vector3(0, cold.transform.localScale.y * 2, 0) ||
+                            ob.transform.position == cold.transform.position + new Vector3(0, cold.transform.localScale.y * 2, 0))
+                        {
+                            if (ob.tag == "Rock" || ob.tag == "Paper" || ob.tag == "Scissor" || ob.tag == FieldTag)
+                                ob.GetComponent<Animator>().SetTrigger("Change");
+                            ob.tag = "NoGo";
+                        }
+                    }
+
+                }
+                if(cold.gameObject.tag == "NoGo") DoDamage(1, cold.gameObject);
+
+                Invincible = 2;
+            }
+            else if(cold.gameObject.tag == hand)
+            {
+                DoDamage(0, cold.gameObject);
+            }
         }
     }
 
@@ -83,14 +146,16 @@ public class Health : MonoBehaviour
     }
     public void DoDamage(int DamageTaken, GameObject DidIt)
     {
-        HP -= DamageTaken;
-        HPShowText.text = "HP: " + HP.ToString();
+        if(Invincible <= 0)
+        {
+            HP -= DamageTaken;
+            HPShowText.text = "HP: " + HP.ToString();
+        }
         GameObject spawned = Instantiate(HurtParticleEffect, transform.position, Quaternion.identity);
         rb.velocity = Vector2.zero;
         rb.AddForce(Vector3.Normalize(transform.position - DidIt.transform.position) * PushBack);
-        print(FindObjectOfType<AudioManager>());
         FindObjectOfType<AudioManager>().PlayOneShot("slaphitV3", 1);
-        Invoke("Reactivate", 0.6f);
+        Invoke("Reactivate", 0.4f);
         GetComponent<movement>().enabled = false;
     }
     void Reactivate()

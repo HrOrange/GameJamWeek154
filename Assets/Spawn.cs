@@ -13,17 +13,22 @@ public class Spawn : MonoBehaviour
     public float scalex;
     public int a;
     public GameObject field;
+    public float DistanceToPlayerMin = 3;
+
+    GameObject player;
 
     Color paperColor;
     Color scissorColor;
     Color rockColor;
     List<Color> DifferentRockColors = new List<Color> { new Color(255, 120, 0), new Color(255, 50, 0), new Color(160, 100, 70)};
-    List<Color> DifferentPaperColors = new List<Color> { new Color(255, 255, 255), new Color(220, 255, 255), new Color(255, 220, 255) };
+    List<Color> DifferentPaperColors = new List<Color> { new Color(255, 255, 220), new Color(220, 255, 255), new Color(255, 220, 255) };
     List<Color> DifferentScissorColors = new List<Color> { new Color(255, 0, 255), new Color(50, 0, 255), new Color(220, 140, 255) };
 
     List<GameObject> fields = new List<GameObject>();
     void Start()
     {
+        player = FindObjectOfType<Health>().gameObject;
+
         for (float k = -a / 2 + 0.5f; k < a / 2 + 0.5f; k++)
         {
             for (float i = -a / 2 + 0.5f; i < a / 2 + 0.5f; i++)
@@ -59,41 +64,23 @@ public class Spawn : MonoBehaviour
             Timer = 0;
             int r = Random.Range(0, 3);
 
-            Vector2 SpawnPos = new Vector2((Random.Range(-a / 2, a / 2) + 0.5f) * scalex, (Random.Range(-a / 2, a / 2) + 0.5f) * scaley);
-            bool there = false;
-            foreach(GameObject ob in Resources.FindObjectsOfTypeAll(typeof(GameObject)))
+            List<GameObject> SortedFields = new List<GameObject>();
+            foreach (GameObject ob in fields)
             {
-                if ((Vector2)ob.transform.position == SpawnPos && ob.gameObject.tag != field.tag)
-                {
-                    there = true;
-                    break;
-                } 
+                if (ob.tag == field.tag && Vector3.Distance(ob.transform.position, player.transform.position) >= DistanceToPlayerMin) SortedFields.Add(ob);
             }
-            while (there)
+            if(SortedFields.Count > 0)
             {
-                SpawnPos = new Vector2((Random.Range(-a / 2, a / 2) + 0.5f) * scalex, (Random.Range(-a / 2, a / 2) + 0.5f) * scaley);
-                there = false;
-                foreach (GameObject ob in Resources.FindObjectsOfTypeAll(typeof(GameObject)))
-                {
-                    if ((Vector2)ob.transform.position == SpawnPos && ob.gameObject.tag != field.tag)
-                    {
-                        there = true;
-                        break;
-                    }
-                }
-            }
+                int number = Random.Range(0, SortedFields.Count - 1);
 
-            if (r == 0)
-            {
-                Instantiate(ScissorField, SpawnPos, Quaternion.identity, transform);
+                if (r == 0) SortedFields[number].tag = "Scissor";
+                else if (r == 1) SortedFields[number].tag = "Rock";
+                else SortedFields[number].tag = "Paper";
+                SortedFields[number].GetComponent<Animator>().SetTrigger("Change");
             }
-            else if(r == 1)
+            else
             {
-                Instantiate(RockField, SpawnPos, Quaternion.identity, transform);
-            }
-            else if(r == 2)
-            {
-                Instantiate(PaperField, SpawnPos, Quaternion.identity, transform);
+                print("PlayerHaveLost");
             }
         }
     }
