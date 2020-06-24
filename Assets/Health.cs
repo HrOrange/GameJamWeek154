@@ -117,7 +117,9 @@ public class Health : MonoBehaviour
             }
             else if(cold.gameObject.tag == hand)
             {
-                DoDamage(0, cold.gameObject);
+                cold.GetComponent<Animator>().SetTrigger("Change");
+                cold.gameObject.tag = FieldTag;
+                Instantiate(CollectedPointParticleEffect, cold.transform.position, Quaternion.identity);
             }
         }
     }

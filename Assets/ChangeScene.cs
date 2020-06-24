@@ -9,4 +9,9 @@ public class ChangeScene : MonoBehaviour
     {
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 0;
+        SceneManager.LoadScene("MainMenuV2", LoadSceneMode.Single);
+    }
 }

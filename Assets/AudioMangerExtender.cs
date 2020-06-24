@@ -65,7 +65,7 @@ public class AudioMangerExtender : MonoBehaviour
             AM.MusicVolume = Mathf.Round(newMusicVolume * 100) / 100;
             MusicVolumeShowText.text = ((AM.MusicVolume + 20) / 40 * 100).ToString("F0") + "%";
             MusicVolumeSlider.value = AM.MusicVolume;
-            AM.MainMixer.SetFloat("Music", Mathf.Log10(AM.MusicVolume) * 20);
+            AM.MainMixer.SetFloat("Music", AM.MusicVolume);
         }
         else
         {
