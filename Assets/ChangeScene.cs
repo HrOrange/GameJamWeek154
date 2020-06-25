@@ -11,7 +11,7 @@ public class ChangeScene : MonoBehaviour
     }
     public void ReturnToMainMenu()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainMenuV2", LoadSceneMode.Single);
     }
 }

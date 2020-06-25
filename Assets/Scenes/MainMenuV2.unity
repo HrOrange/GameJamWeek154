@@ -1496,6 +1496,7 @@ GameObject:
   - component: {fileID: 1139027158}
   - component: {fileID: 1139027157}
   - component: {fileID: 1139027156}
+  - component: {fileID: 1139027160}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -1591,6 +1592,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1139027160}
+        m_TargetAssemblyTypeName: PlayEffectOnClick, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1139027158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1629,6 +1642,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139027154}
   m_CullTransparentMesh: 0
+--- !u!114 &1139027160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139027154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8177b79d4c6f439bf684da3c5b03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundEffectName: ButtonClick
+  v: 0.4
 --- !u!1 &1144023303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1875,6 +1902,7 @@ GameObject:
   - component: {fileID: 1163963413}
   - component: {fileID: 1163963412}
   - component: {fileID: 1163963411}
+  - component: {fileID: 1163963414}
   m_Layer: 5
   m_Name: Back
   m_TagString: Untagged
@@ -1970,6 +1998,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1163963414}
+        m_TargetAssemblyTypeName: PlayEffectOnClick, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1163963412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2008,6 +2048,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163963409}
   m_CullTransparentMesh: 0
+--- !u!114 &1163963414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163963409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8177b79d4c6f439bf684da3c5b03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundEffectName: ButtonClick
+  v: 0.4
 --- !u!1 &1211457058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2388,6 +2442,7 @@ GameObject:
   - component: {fileID: 1352102870}
   - component: {fileID: 1352102869}
   - component: {fileID: 1352102868}
+  - component: {fileID: 1352102871}
   m_Layer: 5
   m_Name: Options
   m_TagString: Untagged
@@ -2471,6 +2526,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1139027160}
+        m_TargetAssemblyTypeName: PlayEffectOnClick, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1499933634}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -2521,6 +2588,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352102866}
   m_CullTransparentMesh: 0
+--- !u!114 &1352102871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352102866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8177b79d4c6f439bf684da3c5b03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundEffectName: ButtonClick
+  v: 0.1
 --- !u!1 &1402836543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,6 +2916,7 @@ GameObject:
   - component: {fileID: 1534981771}
   - component: {fileID: 1534981770}
   - component: {fileID: 1534981769}
+  - component: {fileID: 1534981773}
   m_Layer: 5
   m_Name: Leave
   m_TagString: Untagged
@@ -2930,6 +3012,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1139027160}
+        m_TargetAssemblyTypeName: PlayEffectOnClick, Assembly-CSharp
+        m_MethodName: Clicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1534981771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2968,6 +3062,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534981767}
   m_CullTransparentMesh: 0
+--- !u!114 &1534981773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534981767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d8177b79d4c6f439bf684da3c5b03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundEffectName: ButtonClick
+  v: 0.4
 --- !u!1 &1568677206
 GameObject:
   m_ObjectHideFlags: 0
@@ -3963,6 +4071,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bcc80c692abe95e4aaf9c40077e15f72, type: 3}
   - {fileID: 8300000, guid: efe6350cfc5845f4eaa83ce13b6f097a, type: 3}
   - {fileID: 8300000, guid: 7580a2bbb1244704e966fb9103b59bf7, type: 3}
+  - {fileID: 8300000, guid: d6a5ff681aed80d469e50d198675606b, type: 3}
+  - {fileID: 8300000, guid: 8b2abe69965dbe64abc6a4a17c2fe3f9, type: 3}
+  - {fileID: 8300000, guid: e80941ba134539948893cec58848caa2, type: 3}
+  - {fileID: 8300000, guid: 83f4e245f82b21344afbf19c34fd4c7c, type: 3}
   MainMenuSceneNumber: 1
   MainVolume: 0.5
   SoundEffectVolume: 0.5

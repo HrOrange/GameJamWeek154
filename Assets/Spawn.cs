@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawn : MonoBehaviour
 {
+    public string ClockName = "ClockV2";
+    bool once = false;
+
     public float Timer;
+    public float OveralTimer;
+    public Text CountDown;
     public float Interval;
     public GameObject ScissorField;
     public GameObject PaperField;
@@ -59,8 +65,22 @@ public class Spawn : MonoBehaviour
     void Update()
     {
         Timer += Time.deltaTime;
+        OveralTimer += Time.deltaTime;
+        if((Timer + 3) >= Interval)
+        {
+            if (!once)
+            {
+                once = true;
+                FindObjectOfType<AudioManager>().PlayOneShot("ClockV2", 0.4f);
+            }
+            CountDown.gameObject.SetActive(true);
+            CountDown.text = (Interval - Timer).ToString("F2");
+        }
+
         if (Timer >= Interval)
         {
+            once = false;
+            CountDown.gameObject.SetActive(false);
             Timer = 0;
             int r = Random.Range(0, 3);
 

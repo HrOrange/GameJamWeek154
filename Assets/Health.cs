@@ -25,6 +25,8 @@ public class Health : MonoBehaviour
 
     public string FieldTag = "Field";
 
+    public GameObject GameOverMenu;
+
     public string hand;
     public Sprite ScissorImage;
     public Sprite PaperImage;
@@ -159,6 +161,17 @@ public class Health : MonoBehaviour
         FindObjectOfType<AudioManager>().PlayOneShot("slaphitV3", 1);
         Invoke("Reactivate", 0.4f);
         GetComponent<movement>().enabled = false;
+
+        if(HP <= 0)
+        {
+            Invoke("Die", 2);
+            Time.timeScale = 0.3f;
+            GameOverMenu.SetActive(true);
+        }
+    }
+    void Die()
+    {
+        Time.timeScale = 1f;
     }
     void Reactivate()
     {
