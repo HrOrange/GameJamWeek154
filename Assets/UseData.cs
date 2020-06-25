@@ -17,7 +17,7 @@ public class UseData : MonoBehaviour
     float timer;
 
     float MyTextSize = 1f;
-    public float MyTextSizeChangeSpeed = 0.1f;
+    public float MyTextSizeChangeSpeed;
 
     private void Start()
     {
@@ -31,8 +31,7 @@ public class UseData : MonoBehaviour
         timer += Time.deltaTime;
         if(myData < data)
         {
-            if (MyTextSize <= 2f || MyTextSize >= 0.25f) MyTextSizeChangeSpeed = -MyTextSizeChangeSpeed;
-            MyTextSize += MyTextSizeChangeSpeed;
+            if (MyTextSize <= 1.5f || MyTextSize >= 0.3f) MyTextSizeChangeSpeed = -MyTextSizeChangeSpeed;
             MyText.rectTransform.localScale = new Vector3(MyTextSize, MyTextSize, 1);
         }
 

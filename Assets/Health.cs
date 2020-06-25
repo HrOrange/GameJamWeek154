@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class Health : MonoBehaviour
     public float Interval = 5f;
 
     Rigidbody2D rb;
+    public string GetCoinSoundEffectName = "CoinDrop2";
 
     public int HP = 5;
     public float Invincible;
@@ -17,11 +19,11 @@ public class Health : MonoBehaviour
     int round;
     public SpriteRenderer Face;
     Color originalColor;
-    public Text HPShowText;
+    public TextMeshProUGUI HPShowText;
     public float PushBack = 700;
 
     public int Score = 0;
-    public Text ScoreShowText;
+    public TextMeshProUGUI ScoreShowText;
 
     public string FieldTag = "Field";
 
@@ -36,6 +38,55 @@ public class Health : MonoBehaviour
     public GameObject HurtParticleEffect;
     public GameObject CollectedPointParticleEffect;
 
+    public string ClockName = "ClockV2";
+    bool once = false;
+    public TextMeshProUGUI CountDown;
+
+    public GameObject GainMoreHPButton;
+    public GameObject GainMoreSpaceButton;
+    bool ClickOnField = false;
+
+    public void GainMoreHPClicked()
+    {
+        Score -= 2;
+        HP++;
+        HPShowText.text = "HP: " + HP.ToString();
+        ScoreShowText.text = "Coins: " + Score.ToString();
+        CheckForHPChange();
+        CheckForFieldChange();
+    }
+    public void CheckForHPChange()
+    {
+        if (Score >= 2 && HP < 3)
+        {
+            GainMoreHPButton.SetActive(true);
+        }
+        else GainMoreHPButton.SetActive(false);
+    }
+    public void GainMoreSpaceClicked()
+    {
+        ClickOnField = !ClickOnField;
+    }
+    public void CheckForFieldChange()
+    {
+        if (Score >= 1)
+        {
+            bool DidntGetThrough = false;
+            foreach (GameObject ob in FindObjectOfType<Spawn>().fields)
+            {
+                if (ob.tag == "NoGo")
+                {
+                    DidntGetThrough = true;
+                    GainMoreHPButton.SetActive(true);
+                    break;
+                }
+            }
+            if (!DidntGetThrough) GainMoreHPButton.SetActive(false);
+        }
+        else GainMoreHPButton.SetActive(false);
+        print(GainMoreHPButton.activeSelf);
+    }
+
     void Start()
     {
         HPShowText.text = "HP: " + HP.ToString();
@@ -45,6 +96,39 @@ public class Health : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (ClickOnField)
+            {
+                List<GameObject> noGoFields = new List<GameObject>();
+                foreach (GameObject ob in FindObjectOfType<Spawn>().fields)
+                {
+                    if (ob.tag == "NoGo")
+                    {
+                        noGoFields.Add(ob);
+                    }
+                }
+                if(noGoFields.Count > 0)
+                {
+                    Vector2 mousePos = new Vector2(Mathf.Round(Input.mousePosition.x / 2) * 2, Mathf.Round(Input.mousePosition.y / 2) * 2);
+                    print(mousePos);
+                    foreach(GameObject go in noGoFields)
+                    {
+                        if((Vector2)go.transform.position == mousePos)
+                        {
+                            go.tag = "Field";
+                            go.GetComponent<Animator>().SetTrigger("Change");
+                            Score -= 1;
+                            ScoreShowText.text = "Coins: " + Score.ToString();
+                            CheckForFieldChange();
+                            CheckForHPChange();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         clock += Time.deltaTime;
         if (Invincible > 0)
         {
@@ -71,8 +155,21 @@ public class Health : MonoBehaviour
             Invincible = 0;
         }
 
+        if ((clock + 3) >= Interval)
+        {
+            if (!once)
+            {
+                once = true;
+                FindObjectOfType<AudioManager>().PlayOneShot("ClockV2", 0.4f);
+            }
+            CountDown.gameObject.SetActive(true);
+            CountDown.text = (Interval - clock).ToString("F2");
+        }
+
         if (clock >= Interval)
         {
+            once = false;
+            CountDown.gameObject.SetActive(false);
             clock = 0;
             GiveHand();
             FindObjectOfType<Spawn>().ChangeColor();
@@ -88,9 +185,14 @@ public class Health : MonoBehaviour
                 cold.GetComponent<Animator>().SetTrigger("Change");
                 cold.gameObject.tag = FieldTag;
 
+                FindObjectOfType<AudioManager>().PlayOneShot(GetCoinSoundEffectName, 1f);
+
                 Instantiate(CollectedPointParticleEffect, cold.transform.position, Quaternion.identity);
                 Score++;
-                ScoreShowText.text = "Score: " + Score.ToString();
+                CheckForHPChange();
+                CheckForFieldChange();
+
+                ScoreShowText.text = "Coins: " + Score.ToString();
             }
             else if (cold.gameObject.tag == "Rock" && hand == "Scissor" || cold.gameObject.tag == "Paper" && hand == "Rock" || cold.gameObject.tag == "Scissor" && hand == "Paper" || cold.gameObject.tag == "NoGo")
             {
@@ -111,7 +213,7 @@ public class Health : MonoBehaviour
                             ob.tag = "NoGo";
                         }
                     }
-
+                    CheckForFieldChange();
                 }
                 if(cold.gameObject.tag == "NoGo") DoDamage(1, cold.gameObject);
 
@@ -162,7 +264,8 @@ public class Health : MonoBehaviour
         Invoke("Reactivate", 0.4f);
         GetComponent<movement>().enabled = false;
 
-        if(HP <= 0)
+        CheckForHPChange();
+        if (HP <= 0)
         {
             Invoke("Die", 2);
             Time.timeScale = 0.3f;

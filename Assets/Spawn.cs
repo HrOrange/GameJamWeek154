@@ -5,12 +5,8 @@ using UnityEngine.UI;
 
 public class Spawn : MonoBehaviour
 {
-    public string ClockName = "ClockV2";
-    bool once = false;
-
     public float Timer;
     public float OveralTimer;
-    public Text CountDown;
     public float Interval;
     public GameObject ScissorField;
     public GameObject PaperField;
@@ -22,6 +18,7 @@ public class Spawn : MonoBehaviour
     public float DistanceToPlayerMin = 3;
 
     GameObject player;
+    public GameObject GameOverMenu;
 
     Color paperColor;
     Color scissorColor;
@@ -30,7 +27,7 @@ public class Spawn : MonoBehaviour
     List<Color> DifferentPaperColors = new List<Color> { new Color(255, 255, 220), new Color(220, 255, 255), new Color(255, 220, 255) };
     List<Color> DifferentScissorColors = new List<Color> { new Color(255, 0, 255), new Color(50, 0, 255), new Color(220, 140, 255) };
 
-    List<GameObject> fields = new List<GameObject>();
+    [HideInInspector] public List<GameObject> fields = new List<GameObject>();
     void Start()
     {
         player = FindObjectOfType<Health>().gameObject;
@@ -45,7 +42,7 @@ public class Spawn : MonoBehaviour
         rockColor = DifferentRockColors[Random.Range(0, DifferentRockColors.Count - 1)];
         paperColor = DifferentPaperColors[Random.Range(0, DifferentPaperColors.Count - 1)];
         scissorColor = DifferentScissorColors[Random.Range(0, DifferentScissorColors.Count - 1)];
-        Invoke("ChangeColor", 1.8f);
+        Invoke("ChangeColor", 2.2f);
     }
     public void ChangeColor()
     {
@@ -66,21 +63,9 @@ public class Spawn : MonoBehaviour
     {
         Timer += Time.deltaTime;
         OveralTimer += Time.deltaTime;
-        if((Timer + 3) >= Interval)
-        {
-            if (!once)
-            {
-                once = true;
-                FindObjectOfType<AudioManager>().PlayOneShot("ClockV2", 0.4f);
-            }
-            CountDown.gameObject.SetActive(true);
-            CountDown.text = (Interval - Timer).ToString("F2");
-        }
 
         if (Timer >= Interval)
         {
-            once = false;
-            CountDown.gameObject.SetActive(false);
             Timer = 0;
             int r = Random.Range(0, 3);
 
@@ -100,9 +85,15 @@ public class Spawn : MonoBehaviour
             }
             else
             {
-                print("PlayerHaveLost");
+                Invoke("Die", 2);
+                Time.timeScale = 0.3f;
+                GameOverMenu.SetActive(true);
             }
         }
+    }
+    void Die()
+    {
+        Time.timeScale = 1f;
     }
 
 }
