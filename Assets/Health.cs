@@ -77,14 +77,13 @@ public class Health : MonoBehaviour
                 if (ob.tag == "NoGo")
                 {
                     DidntGetThrough = true;
-                    GainMoreHPButton.SetActive(true);
+                    GainMoreSpaceButton.SetActive(true);
                     break;
                 }
             }
-            if (!DidntGetThrough) GainMoreHPButton.SetActive(false);
+            if (!DidntGetThrough) GainMoreSpaceButton.SetActive(false);
         }
-        else GainMoreHPButton.SetActive(false);
-        print(GainMoreHPButton.activeSelf);
+        else GainMoreSpaceButton.SetActive(false);
     }
 
     void Start()
