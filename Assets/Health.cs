@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
 
     public void GainMoreHPClicked()
     {
-        Score -= 2;
+        Score -= 20;
         HP++;
         HPShowText.text = "HP: " + HP.ToString();
         ScoreShowText.text = "Coins: " + Score.ToString();
@@ -57,7 +57,7 @@ public class Health : MonoBehaviour
     }
     public void CheckForHPChange()
     {
-        if (Score >= 2 && HP < 3)
+        if (Score >= 20 && HP < 3)
         {
             GainMoreHPButton.SetActive(true);
         }
@@ -69,7 +69,7 @@ public class Health : MonoBehaviour
     }
     public void CheckForFieldChange()
     {
-        if (Score >= 1)
+        if (Score >= 10)
         {
             bool DidntGetThrough = false;
             foreach (GameObject ob in FindObjectOfType<Spawn>().fields)
@@ -81,9 +81,17 @@ public class Health : MonoBehaviour
                     break;
                 }
             }
-            if (!DidntGetThrough) GainMoreSpaceButton.SetActive(false);
+            if (!DidntGetThrough)
+            {
+                GainMoreSpaceButton.SetActive(false);
+                ClickOnField = false;
+            } 
         }
-        else GainMoreSpaceButton.SetActive(false);
+        else
+        {
+            GainMoreSpaceButton.SetActive(false);
+            ClickOnField = false;
+        }
     }
 
     void Start()
@@ -109,20 +117,28 @@ public class Health : MonoBehaviour
                 }
                 if(noGoFields.Count > 0)
                 {
-                    Vector2 mousePos = new Vector2(Mathf.Round(Input.mousePosition.x / 2) * 2, Mathf.Round(Input.mousePosition.y / 2) * 2);
-                    print(mousePos);
-                    foreach(GameObject go in noGoFields)
+                    Vector2 mousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                    mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+                    GameObject Closest = noGoFields[0];
+                    float ClosestDistance = Vector2.Distance((Vector2)Closest.transform.position, mousePos);
+                    foreach (GameObject go in noGoFields)
                     {
-                        if((Vector2)go.transform.position == mousePos)
+                        if(Vector2.Distance((Vector2)go.transform.position, mousePos) < ClosestDistance)
                         {
-                            go.tag = "Field";
-                            go.GetComponent<Animator>().SetTrigger("Change");
-                            Score -= 1;
-                            ScoreShowText.text = "Coins: " + Score.ToString();
-                            CheckForFieldChange();
-                            CheckForHPChange();
-                            break;
+                            ClosestDistance = Vector2.Distance((Vector2)go.transform.position, mousePos);
+                            Closest = go;
                         }
+                    }
+                    print(ClosestDistance);
+                    if(ClosestDistance <= 1.35f)
+                    {
+                        Closest.tag = "Field";
+                        Closest.GetComponent<Animator>().SetTrigger("Change");
+                        Score -= 10;
+                        ScoreShowText.text = "Coins: " + Score.ToString();
+                        CheckForFieldChange();
+                        CheckForHPChange();
                     }
                 }
             }
@@ -232,21 +248,33 @@ public class Health : MonoBehaviour
         int r = Random.Range(0, 3);
         if (r == 0)
         {
-            hand = "Rock";
-            Shown.GetComponent<Image>().sprite = RockImage;
-            Shown.GetComponent<RectTransform>().localScale = new Vector3(0.75f, 0.75f, 0);
+            if (hand != "Rock")
+            {
+                hand = "Rock";
+                Shown.GetComponent<Image>().sprite = RockImage;
+                Shown.GetComponent<RectTransform>().localScale = new Vector3(0.75f, 0.75f, 0);
+            }
+            else GiveHand();
         }
         else if (r == 1)
         {
-            hand = "Paper";
-            Shown.GetComponent<Image>().sprite = PaperImage;
-            Shown.GetComponent<RectTransform>().localScale = new Vector3(0.75f, 0.75f, 0);
+            if (hand != "Paper")
+            {
+                hand = "Paper";
+                Shown.GetComponent<Image>().sprite = PaperImage;
+                Shown.GetComponent<RectTransform>().localScale = new Vector3(0.75f, 0.75f, 0);
+            }
+            else GiveHand();
         }
         else if (r == 2)
         {
-            hand = "Scissor";
-            Shown.GetComponent<Image>().sprite = ScissorImage;
-            Shown.GetComponent<RectTransform>().localScale = new Vector3(0.8f, 0.6f, 0);
+            if (hand != "Scissor")
+            {
+                hand = "Scissor";
+                Shown.GetComponent<Image>().sprite = ScissorImage;
+                Shown.GetComponent<RectTransform>().localScale = new Vector3(0.8f, 0.6f, 0);
+            }
+            else GiveHand();
         }
     }
     public void DoDamage(int DamageTaken, GameObject DidIt)

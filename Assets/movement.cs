@@ -17,7 +17,7 @@ public class movement : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("p"))
+        if (Input.GetKeyDown("p") || Input.GetKeyDown(KeyCode.Escape))
         {
             if (PauseMenu.activeSelf && !SettingsMenu.activeSelf)
             {
@@ -45,6 +45,7 @@ public class movement : MonoBehaviour {
 
     void moveCharacter(Vector2 direction)
     {
-        rb.AddForce(direction * speed);
+        //rb.AddForce(direction * speed);
+        rb.MovePosition(transform.position + (Vector3)direction * speed * Time.fixedDeltaTime);
     }
 }
